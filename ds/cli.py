@@ -126,10 +126,17 @@ def cmd_runs(args: argparse.Namespace) -> int:
     return config.OK
 
 
+def version() -> str:
+    # Read from the file, not package metadata: the Docker image runs the
+    # mounted repo without installing it.
+    return (config.REPO / "version.txt").read_text().strip()
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="ds", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
+    parser.add_argument("--version", action="version", version=f"ds {version()}")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     p = sub.add_parser("run", help="run one stage through the agent")

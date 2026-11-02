@@ -10,6 +10,8 @@ y su instalación está en `docs/SERVER.md`.
 - [ ] `uv` (`pip install --user uv`) y luego `uv sync`, que instala Python 3.12
       y las dependencias en `.venv/`.
 - [ ] `cp .env.example .env` y apuntar `WEBSITE_REPO` al checkout del sitio.
+- [ ] `git config core.hooksPath .githooks`, una vez por clon: cada commit sube
+      la versión de `version.txt` (igual que en el repo del sitio).
 - [ ] `uv run pytest` tiene que pasar entero.
 - [ ] ImageMagick, para el recorte final de cada imagen:
       `sudo apt install imagemagick`. Se comprueba con `convert -version`.
