@@ -3,7 +3,9 @@
 Las corridas en producción salen de un contenedor en la VM de Google Compute
 Engine. El contenedor no queda prendido: cada corrida es un
 `docker compose run --rm ds ...` que arranca, hace su trabajo y se apaga. Quien
-decide cuándo es el programador externo (cron de la VM, u otro).
+decide cuándo es el programador externo: por ahora el cron de la VM, más
+adelante el sitio de administración propio (otro repo), que lanza y sigue las
+corridas.
 
 El repo **no** va dentro de la imagen: se monta en `/app`. Las corridas
 escriben en `content/` y confirman ahí, y esos cambios tienen que quedar en el
@@ -11,7 +13,7 @@ checkout de la VM, no en una capa del contenedor que desaparece.
 
 ## Una sola vez
 
-### 1. Docker y los dos repos
+### 1. Docker y el repo
 
 ```bash
 sudo apt install docker.io docker-compose-v2
@@ -19,28 +21,13 @@ sudo usermod -aG docker $USER          # salir y volver a entrar
 sudo mkdir -p /srv/data-shuffle && sudo chown $USER /srv/data-shuffle
 cd /srv/data-shuffle
 git clone git@github.com:macasolar/data-shuffle-marketing.git marketing
-git clone git@github.com:macasolar/web-data-shuffle.git website
+git -C marketing config core.hooksPath .githooks   # cada commit sube la versión
 ```
 
-### 2. Llave de despliegue para el sitio
+Solo este repo. El del sitio no va en la VM ni en el contenedor: desde aquí
+no se escribe en ningún otro repo (`CLAUDE.md`, regla 0).
 
-La corrida del artículo empuja una rama `post/*` al repo del sitio. Una llave
-propia, solo para eso:
-
-```bash
-mkdir -p /srv/data-shuffle/ssh && cd /srv/data-shuffle/ssh
-ssh-keygen -t ed25519 -f id_ed25519 -N "" -C "ds-marketing@vm"
-ssh-keyscan github.com > known_hosts
-```
-
-`id_ed25519.pub` va en GitHub, en `web-data-shuffle` > Settings > Deploy keys,
-**con permiso de escritura**. La regla de que nunca se toca `master` no depende
-de esta llave: la ponen el hook `no-publishing.sh` y la protección de rama.
-
-Si el repo de marketing también se empuja desde la VM, necesita su propia
-llave de despliegue (GitHub no deja usar la misma en dos repos).
-
-### 3. `.env`
+### 2. `.env`
 
 ```bash
 cd /srv/data-shuffle/marketing && cp .env.example .env
@@ -50,19 +37,16 @@ cd /srv/data-shuffle/marketing && cp .env.example .env
   (dura un año). **No pongas también `ANTHROPIC_API_KEY`**: si están las dos,
   `ds run` se niega a arrancar, porque la de la API ganaría sin avisar y la
   cuenta pasaría a pagarse por token.
-- `WEBSITE_HOST_PATH=/srv/data-shuffle/website`
-- `SSH_DIR=/srv/data-shuffle/ssh`
 - `HOST_UID=` la salida de `id -u`, para que los archivos que escriben las
   corridas sigan siendo tuyos.
 
-### 4. Imagen y dependencias del sitio
+### 3. Imagen
 
 ```bash
 docker compose build
-docker compose run --rm -w /work/website --entrypoint npm ds ci
 ```
 
-### 5. Confianza y Metricool, dentro del contenedor
+### 4. Confianza y Metricool, dentro del contenedor
 
 ```bash
 docker compose run --rm --entrypoint claude ds
@@ -84,7 +68,7 @@ Las dos cosas quedan en el volumen `claude-home`, y sobreviven a cada
 > lo muestra Claude al empezar la autorización. Se confirma la primera vez que
 > se haga.
 
-### 6. Comprobar
+### 5. Comprobar
 
 ```bash
 docker compose run --rm ds run week --dry-run   # el prompt, sin llamar a nada

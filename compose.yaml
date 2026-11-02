@@ -1,6 +1,7 @@
-# One service, run on demand by the host's scheduler:
+# One service, run on demand by whatever dispatches the work:
 #   docker compose run --rm ds run week
-# Nothing stays up between runs. See docs/SERVER.md.
+# Nothing stays up between runs. Only this repo is mounted (CLAUDE.md rule 0).
+# See docs/SERVER.md.
 services:
   ds:
     build:
@@ -10,16 +11,11 @@ services:
     image: ds-marketing
     env_file: .env
     environment:
-      # Fixed inside the container whatever .env says for the host.
-      WEBSITE_REPO: /work/website
-      CLAUDE_CONFIG_DIR: /home/node/.claude
+      CLAUDE_CONFIG_DIR: /home/ds/.claude
     volumes:
       - .:/app
-      - ${WEBSITE_HOST_PATH:?set WEBSITE_HOST_PATH in .env}:/work/website
       # Claude login, Metricool's OAuth token and the workspace trust live here.
-      - claude-home:/home/node/.claude
-      # Deploy key that can push post/* branches to the website repo.
-      - ${SSH_DIR:?set SSH_DIR in .env}:/home/node/.ssh:ro
+      - claude-home:/home/ds/.claude
 
 volumes:
   claude-home:

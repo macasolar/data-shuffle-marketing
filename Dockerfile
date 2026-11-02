@@ -2,15 +2,14 @@
 # /app, because runs edit content/ and commit, and those commits belong in the
 # checkout on the host, not in a container layer that disappears.
 #
-# Node is the base because the website repo needs it (npm run validate runs
-# inside the blog stage). Python comes from uv; the Claude CLI comes bundled
-# with claude-agent-sdk.
-FROM node:22-bookworm-slim
+# No other repo is mounted (CLAUDE.md rule 0). Python comes from uv; the Claude
+# CLI is a native binary bundled with claude-agent-sdk, so there is no Node.
+FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        chromium imagemagick git jq perl openssh-client ca-certificates tzdata \
+        chromium imagemagick git jq perl ca-certificates tzdata \
     && rm -rf /var/lib/apt/lists/* \
-    # Mounted repos are owned by the host user; without this git refuses them.
+    # The mounted repo is owned by the host user; without this git refuses it.
     && git config --system safe.directory '*'
 
 COPY --from=ghcr.io/astral-sh/uv:0.13.6 /uv /usr/local/bin/uv
@@ -27,11 +26,10 @@ RUN uv python install 3.12 \
     && printf '#!/bin/sh\nexec /opt/venv/bin/python -m ds "$@"\n' > /usr/local/bin/ds \
     && chmod +x /usr/local/bin/ds
 
-# Match the host user that owns the checkouts, so files the runs write stay
-# editable on the host. Build with --build-arg UID=$(id -u).
+# Same uid as the host user that owns the checkout, so files the runs write
+# stay editable on the host. Build with --build-arg UID=$(id -u).
 ARG UID=1000
-RUN if [ "$UID" != "1000" ]; then usermod -u "$UID" node; fi \
-    && mkdir -p /home/node/.claude && chown node /home/node/.claude
+RUN useradd --create-home --uid "$UID" ds && mkdir -p /home/ds/.claude && chown ds /home/ds/.claude
 
 ENV PATH=/opt/venv/bin:$PATH \
     TZ=America/Panama \
@@ -39,9 +37,8 @@ ENV PATH=/opt/venv/bin:$PATH \
     PYTHONUNBUFFERED=1 \
     CHROME_BIN=chromium \
     CHROME_NO_SANDBOX=1 \
-    CLAUDE_CONFIG_DIR=/home/node/.claude \
-    WEBSITE_REPO=/work/website
+    CLAUDE_CONFIG_DIR=/home/ds/.claude
 
-USER node
+USER ds
 ENTRYPOINT ["ds"]
 CMD ["--help"]
