@@ -48,8 +48,6 @@
   },
   "permissions": {
     "deny": [
-      "Bash(git push:*master*)",
-      "Bash(git push:*main*)",
       "Bash(git merge:*)",
       "Bash(git rebase:*)",
       "Bash(git reset --hard:*)",
