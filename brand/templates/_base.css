@@ -1,0 +1,84 @@
+/* Shared by every template. The values come from the site, see brand/visual.md. */
+@font-face { font-family: "Space Grotesk"; font-weight: 700; font-display: block;
+  src: url("../fonts/spacegrotesk-700-latin.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 600; font-display: block;
+  src: url("../fonts/spacegrotesk-600-latin.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 400; font-display: block;
+  src: url("../fonts/inter-400-latin.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; font-display: block;
+  src: url("../fonts/inter-500-latin.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 500; font-display: block;
+  src: url("../fonts/jbmono-500-latin.woff2") format("woff2"); }
+
+:root {
+  --bg: #0b0e14;
+  --surface: #131826;
+  --border: #262e42;
+  --text: #f3f5f9;
+  --text-muted: #99a0b2;
+  --accent: #e8503a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { overflow: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  /* The dot grid from the logo, dimmed, as texture. Same idea as the LinkedIn
+     banner in the website repo. */
+  background-image: radial-gradient(circle, rgba(153, 160, 178, 0.1) 1.6px, transparent 1.7px);
+  background-size: 34px 34px;
+}
+
+h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* One word or phrase of the title in the accent colour. The prompt writes it
+   as <b> in the title field, and it is not drawn bolder: the colour is the
+   emphasis. */
+b { color: var(--accent); font-weight: inherit; }
+
+.kicker {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.body-text { color: var(--text-muted); line-height: 1.5; }
+
+.cta {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  /* line-height stated rather than left to `normal`: the capture clipped the
+     descenders of a one-line CTA without it. */
+  line-height: 1.5;
+}
+.cta::before {
+  content: "";
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.brand { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+.brand img { display: block; }
+.brand span {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}

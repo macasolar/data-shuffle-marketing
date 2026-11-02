@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="_base.css">
+<style>
+  /* Google Business Profile post: 1200x900 (4:3). Shown small and next to
+     competitors, so it is the service name and the city, not an argument. */
+  html, body { width: 1200px; height: 900px; }
+  body { display: flex; flex-direction: column; justify-content: space-between; padding: 80px; }
+  .brand span { font-size: 30px; }
+  .kicker { font-size: 22px; margin-bottom: 26px; }
+  h1 { font-size: 72px; }
+  .body-text { font-size: 28px; margin-top: 30px; max-width: 940px; }
+  .cta { font-size: 24px; }
+</style>
+</head>
+<body>
+  <div class="brand"><img src="_logo.svg" width="60" height="60" alt=""><span>data-shuffle</span></div>
+  <div>
+    <p class="kicker">{{kicker}}</p>
+    <h1>{{titulo}}</h1>
+    <p class="body-text">{{cuerpo}}</p>
+  </div>
+  <p class="cta">{{cta}}</p>
+</body>
+</html>

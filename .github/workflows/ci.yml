@@ -1,0 +1,28 @@
+# Checks the runner on every push and PR. Never runs a stage: no tokens, no
+# connectors. Production runs happen on the VM, see docs/SERVER.md.
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.13.6"
+
+      - name: ImageMagick for the render test
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+
+      - run: uv sync --frozen
+      - run: uv run ruff check ds tests
+      - run: uv run ruff format --check ds tests
+      - run: uv run mypy ds
+      - run: uv run pytest -q
+      - name: Content check
+        run: uv run ds check

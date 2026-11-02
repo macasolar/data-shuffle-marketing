@@ -1,0 +1,4 @@
+# Only pyproject.toml and uv.lock are copied into the image; the repo is mounted.
+*
+!pyproject.toml
+!uv.lock

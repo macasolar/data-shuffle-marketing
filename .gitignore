@@ -1,0 +1,40 @@
+# Rendered images. They live in Metricool and in the published post, not in git.
+output/
+*.mp4
+*.mov
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.key
+
+# Local Claude settings
+.claude/settings.local.json
+
+
+# Session handoff (per machine, rewritten by the handoff skill)
+CURRENT_WORK.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+
+# Temp page written by ds/render.py, swept on the next run
+brand/templates/_render-*.html
+
+# Python
+# The lockfile is the build input for Docker and CI; a global *.lock ignore
+# on this machine would otherwise drop it.
+!uv.lock
+.venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Run records and logs (runs.db, ds.log, one folder per run). They live on the
+# machine that ran them; the admin site will read them from there.
+runs/

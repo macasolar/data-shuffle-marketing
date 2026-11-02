@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="_base.css">
+<style>
+  /* Instagram and Facebook post: 1080x1350 (4:5). The profile grid crops to
+     3:4, about 34px a side, so the padding is 88px and nothing legible goes
+     near the edge. See brand/visual.md. */
+  html, body { width: 1080px; height: 1350px; }
+  body { display: flex; flex-direction: column; justify-content: space-between; padding: 88px; }
+  .brand span { font-size: 30px; }
+  .kicker { font-size: 22px; margin-bottom: 24px; }
+  h1 { font-size: 76px; }
+  .body-text { font-size: 30px; margin-top: 34px; }
+  .cta { font-size: 26px; }
+</style>
+</head>
+<body>
+  <div class="brand"><img src="_logo.svg" width="62" height="62" alt=""><span>data-shuffle</span></div>
+  <div>
+    <p class="kicker">{{kicker}}</p>
+    <h1>{{titulo}}</h1>
+    <p class="body-text">{{cuerpo}}</p>
+  </div>
+  <p class="cta">{{cta}}</p>
+</body>
+</html>

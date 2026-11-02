@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- Mandatory. Without it Chrome lays out at 980px and scales everything. -->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="_base.css">
+<style>
+  /* LinkedIn post image: 1200x627. Wide, so the title carries it and the
+     body text is one line at most. */
+  html, body { width: 1200px; height: 627px; }
+  body { display: flex; flex-direction: column; justify-content: space-between; padding: 72px 80px; }
+  .kicker { font-size: 20px; }
+  h1 { font-size: 62px; max-width: 980px; margin-top: 22px; }
+  .body-text { font-size: 24px; max-width: 860px; margin-top: 26px; }
+  .foot { display: flex; align-items: center; justify-content: space-between; }
+  .brand span { font-size: 26px; }
+  .cta { font-size: 22px; }
+</style>
+</head>
+<body>
+  <div>
+    <p class="kicker">{{kicker}}</p>
+    <h1>{{titulo}}</h1>
+    <p class="body-text">{{cuerpo}}</p>
+  </div>
+  <div class="foot">
+    <div class="brand"><img src="_logo.svg" width="54" height="54" alt=""><span>data-shuffle</span></div>
+    <p class="cta">{{cta}}</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="_base.css">
+<style>
+  /* One carousel slide, 1080x1350. Rendered once per slide, so `slide` and
+     `total` are what tells the reader where they are. */
+  html, body { width: 1080px; height: 1350px; }
+  body { display: flex; flex-direction: column; justify-content: space-between; padding: 88px; }
+  .top { display: flex; align-items: center; justify-content: space-between; }
+  .brand span { font-size: 28px; }
+  .paso { font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: 26px; color: var(--text-muted); }
+  .paso em { color: var(--accent); font-style: normal; }
+  h1 { font-size: 68px; }
+  .body-text { font-size: 32px; margin-top: 36px; }
+  .cta { font-size: 26px; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="brand"><img src="_logo.svg" width="54" height="54" alt=""><span>data-shuffle</span></div>
+    <p class="paso"><em>{{slide}}</em> / {{total}}</p>
+  </div>
+  <div>
+    <h1>{{titulo}}</h1>
+    <p class="body-text">{{cuerpo}}</p>
+  </div>
+  <p class="cta">{{cta}}</p>
+</body>
+</html>

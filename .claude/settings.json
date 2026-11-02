@@ -1,0 +1,62 @@
+{
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.sh" } ] }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [ { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/no-em-dash.sh" } ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [ { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/no-publishing.sh" } ]
+      }
+    ]
+  },
+  "permissions": {
+    "deny": [
+      "Bash(git push:*master*)",
+      "Bash(git push:*main*)",
+      "Bash(git merge:*)",
+      "Bash(git rebase:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean:*)",
+      "Bash(./deploy.sh:*)",
+      "Bash(npm run deploy:*)",
+      "Bash(npm run indexnow:*)",
+      "Bash(lftp:*)",
+      "Read(./.env)",
+      "Read(../website-data-shuffle/deploy.env)"
+    ],
+    "allow": [
+      "Bash(ds check:*)",
+      "Bash(ds render:*)",
+      "Bash(npm run validate)",
+      "Bash(npm run check:voz:*)",
+      "Bash(npm run check:enlaces)",
+      "Bash(npm run build)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git switch:*)",
+      "Bash(git branch:*)",
+      "Bash(git mv:*)",
+      "Bash(git pull --ff-only)",
+      "Bash(git push -u origin post/*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(wc:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\":*)"
+    ]
+  }
+}
