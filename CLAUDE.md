@@ -24,6 +24,16 @@ Same rule as the website repo, by role rather than by file type:
 
 ## Rules
 
+0. **A development session here modifies only this repo. Hard rule.** It
+   binds the interactive agent working on this repo (VS Code, terminal) and
+   any agent it spawns: no file in another repo is created, edited, moved or
+   deleted, and no git command that changes another repo (add, commit, push,
+   switch...) is run on it. Changes another repo needs go to José or to that
+   repo's own agent. The hook `.claude/hooks/only-this-repo.sh` enforces it.
+   It does **not** bind what this repo ships: the production code and the
+   agents `ds run` starts may write to other repos through the path a stage
+   defines (for example a `post/*` branch and PR in the website repo). The
+   runner marks its agents with `DS_RUN=1`, and the hook lets them through.
 1. **Never use the em dash** (U+2014), in any language, anywhere: posts, copy,
    comments, commit messages. Use a plain hyphen with spaces, a comma,
    parentheses, or restructure. A hook blocks it on write.
@@ -98,6 +108,9 @@ thing: the prompts do not depend on the runner.
   Check what it claims against `git log` before acting on it.
 - It is rewritten only by the `handoff` skill: before any push, and when
   closing a session or switching tasks. Never mark work done unless verified.
+- Push order: commit, handoff, push. `.claude/hooks/confirm-git-push.sh`
+  refuses a push while `CURRENT_WORK.md` is missing or older than the last
+  commit, and asks José to confirm otherwise.
 
 ## Other operating rules
 

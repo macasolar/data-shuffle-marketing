@@ -6,7 +6,11 @@ argument-hint: "(optional) what to emphasise for the next session"
 
 # Session handoff (`CURRENT_WORK.md`)
 
-Writes `CURRENT_WORK.md` at the repo root. It is gitignored (this machine only)
+Writes `CURRENT_WORK.md` at the repo root. Order when pushing: **commit, then
+handoff, then push**. `.claude/hooks/confirm-git-push.sh` refuses a push while
+`CURRENT_WORK.md` is missing or older than the last commit.
+
+ It is gitignored (this machine only)
 and **rewritten whole**, never appended: the history lives in git, in the piece
 files and in `ads/log.md`.
 
@@ -16,7 +20,9 @@ files and in `ads/log.md`.
 2. The pipeline: `grep -h '^estado:' content/*/*.md | sort | uniq -c`
 3. Open questions: `grep -c '^- \[ \]' facts/OPEN-QUESTIONS.md`
 4. `strategy/cadence.md`: current `phase` and `auto_approve_evergreen`.
-5. Only call **done** what was verified: the connector answered, the piece is
+5. `cat version.txt` and `uv run ds runs --limit 5`: the version, and whether
+   the last runs failed (status, exit code, error).
+6. Only call **done** what was verified: the connector answered, the piece is
    visible in Metricool, the branch is on the remote. Everything else goes
    under "Not tested".
 
@@ -25,6 +31,7 @@ files and in `ads/log.md`.
 ```markdown
 # Work in progress, <branch>, <YYYY-MM-DD>
 Task: <one line>
+Version: <version.txt> | Last runs: <ok/failed, run ids if failed>
 Phase: <n> | auto_approve_evergreen: <bool> | Open questions: <n>
 
 ## Status

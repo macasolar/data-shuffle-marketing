@@ -66,10 +66,13 @@ reparto de idiomas y las reglas de enlaces.
    deja `imageTodo` con el nombre del archivo que falta y dilo en el resumen.
    No publiques un artículo con una imagen cortada ni con un diagrama en la
    cabecera (el hueco de cabecera recorta a una banda de 340 px).
-6. **Los enlaces.** Dos hacia fuera y dos hacia dentro: el cuerpo enlaza dos
-   artículos publicados, y dos artículos ya publicados tienen que enlazar a
-   este, escrito a mano en ellos. `npm run check:enlaces` falla si falta
-   alguno, y corre dentro de `validate`.
+6. **Los enlaces.** Solo hacia fuera: el cuerpo del artículo nuevo enlaza dos
+   artículos publicados, escritos dentro de este mismo archivo.
+   `npm run check:enlaces` falla si faltan, y corre dentro de `validate`.
+   Los enlaces hacia dentro **no los escribes tú**: los pone el sitio al
+   construirse (`src/related.ts`, las tarjetas "Seguir leyendo"), que garantiza
+   que cada artículo reciba al menos dos. **Prohibido editar un artículo ya
+   publicado para enlazar a este**, aunque parezca que ayuda.
 7. **Deja el artículo listo para publicar**: `draft: false` y el archivo fuera
    de `src/content/blog/draft/` (con `git mv` si venía de ahí). Son los dos
    pasos, y la compilación para si solo se hace uno.
@@ -91,8 +94,8 @@ reparto de idiomas y las reglas de enlaces.
   despliegue sale solo al mezclar en `master`, y sube el sitio por FTPS y avisa
   a IndexNow. Eso lo decide una persona.
 - **No mezclas a `develop`** tampoco. Dejas la rama empujada y nada más.
-- No tocas nada fuera del artículo, sus imágenes y los dos artículos donde
-  escribes el enlace de vuelta.
+- No tocas nada fuera del artículo nuevo y sus imágenes. Ningún artículo ya
+  publicado, ni para añadirle un enlace.
 - No creas piezas de redes aquí. Eso es `make-week`, y corre cuando el artículo
   ya está publicado y tiene URL viva.
 
@@ -102,8 +105,7 @@ reparto de idiomas y las reglas de enlaces.
 - Si venía de un borrador existente o es nuevo.
 - Qué dice el caso y si es real o ilustrativo, con su fuente.
 - Las imágenes hechas y las que faltan.
-- Los dos enlaces hacia fuera y los dos artículos donde escribiste el enlace de
-  vuelta.
+- Los dos enlaces hacia fuera.
 - `validate`: verde, o los fallos exactos.
 - El comando para ver la rama y el comando para publicarla, de forma que José
   solo tenga que leerla y mezclar.

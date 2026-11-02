@@ -56,6 +56,9 @@ def options(
         model=model,
         max_turns=max_turns,
         max_budget_usd=budget_usd,
+        # Marks a production run, so hooks scoped to the development session
+        # (only-this-repo.sh, CLAUDE.md rule 0) stand aside.
+        env={"DS_RUN": "1"},
         stderr=lambda line: print(line, file=stderr, flush=True),
     )
 
